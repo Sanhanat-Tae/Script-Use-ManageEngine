@@ -1,3 +1,4 @@
+// =============================================================================================
 /*Test on Postman
 Test GET Inventory form endpoint central
 GET https://localhost:8383/api/1.4/inventory/scancomputers
@@ -12,6 +13,8 @@ Set Headers
 | Content-Type     |   application/json    |
 |------------------------------------------|
 */
+// =============================================================================================
+
 var json = pm.response.json();
 var computers = json.message_response.scancomputers;
 
