@@ -4,10 +4,16 @@
 requester_id = requestObj.get("requester").get("id");
 helpdesk_id  = context.get("instance").get("id");
 
+//Change this to your ManageEngine SDP API endpoint
+url = "<URL_SDP_MSP>/api/v3/users/" + requester_id;
+
+// Change this to your ManageEngine SDP API key and portal ID
+headers = {"authtoken":"<API_KEY>","accept" : "application/vnd.manageengine.sdp.v3+json","PORTALID":"1"};
+
 // Extract UDF selections with safe chaining
 udf          = requestObj.get("udf_fields");
-dept_name    = udf.get("udf_pick_602").get("name");
-site_name    = udf.get("udf_pick_603").get("name");
+dept_name    = udf.get("udf_pick_605").get("name"); // GET UDF field for department name
+site_name    = udf.get("udf_pick_606").get("name"); // GET UDF field for site name
 
 // Guard: skip if both values are empty
 if (isNull(dept_name) && isNull(site_name))
@@ -18,12 +24,14 @@ if (isNull(dept_name) && isNull(site_name))
 
 // Build payload
 input_data = {
-    "users": {
+    "user": {
         "department": {
-            "name": dept_name,
             "site": {
                 "name": site_name
             }
+        },
+        "account": {
+            "name": dept_name
         }
     }
 };
@@ -31,16 +39,15 @@ input_data = {
 // PUT request to update user
 response = invokeurl
 [
-    url  : "http://localhost:8081/api/v3/users/" + requester_id
+    url  : url
     type : PUT
-    parameters : {
-        "input_data"    : input_data,
-        "TECHNICIAN_KEY": "",
-        "PORTALID"      : helpdesk_id
-    }
+    parameters : {"input_data": input_data}
+	headers: headers
+	
 ];
 
 // Debug logs
+info "requesterID: " + requester_id;
 info "dept_name  : " + dept_name;
 info "site_name  : " + site_name;
 info "response   : " + response;
