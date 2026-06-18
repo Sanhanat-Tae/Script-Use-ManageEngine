@@ -35,7 +35,7 @@ response = invokeurl
     type : PUT
     parameters : {
         "input_data"    : input_data,
-        "TECHNICIAN_KEY": "BC020554-2CEE-41D6-A89F-541B6F4B0638",
+        "TECHNICIAN_KEY": "",
         "PORTALID"      : helpdesk_id
     }
 ];
